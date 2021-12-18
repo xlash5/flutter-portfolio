@@ -95,7 +95,7 @@ class ConsoleWindow extends StatelessWidget {
                       scale: 5,
                     ),
                   ),
-                  const SizedBox(width: 100.0),
+                  SizedBox(width: _minimized ? 10.0 : 100.0),
                   Text(
                     "DRAG ME",
                     style: Theme.of(context).textTheme.bodySmall,
