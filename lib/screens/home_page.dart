@@ -6,9 +6,9 @@ import '../widgets/my_icon_button.dart';
 import '../widgets/console_window.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-final Shader linearGradient = const LinearGradient(
-  colors: <Color>[Color(0xffDA44bb), Color(0xff8921aa)],
-).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
+// final Shader linearGradient = const LinearGradient(
+//   colors: <Color>[Color(0xffDA44bb), Color(0xff8921aa)],
+// ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,6 +21,9 @@ class _HomePageState extends State<HomePage> {
   bool isDark = false;
   bool _show = false;
   bool _showText = false;
+  bool _expanded = false;
+  bool _minimized = false;
+  bool _closed = false;
 
   @override
   void initState() {
@@ -34,6 +37,30 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         _showText = true;
       });
+    });
+  }
+
+  void Function()? _onExpand() {
+    setState(() {
+      _closed = false;
+      _minimized = false;
+      _expanded = !_expanded;
+    });
+  }
+
+  void Function()? _onMinimize() {
+    setState(() {
+      _closed = false;
+      _expanded = false;
+      _minimized = !_minimized;
+    });
+  }
+
+  void Function()? _onClose() {
+    setState(() {
+      _minimized = false;
+      _expanded = false;
+      _closed = !_closed;
     });
   }
 
@@ -156,9 +183,27 @@ class _HomePageState extends State<HomePage> {
                     child: Draggable<int>(
                       // Data is the value this Draggable stores.
                       data: 10,
-                      feedback: ConsoleWindow(showText: _showText, show: _show),
+                      feedback: ConsoleWindow(
+                        onClose: _onClose,
+                        closed: _closed,
+                        minimized: _minimized,
+                        onMinimize: _onMinimize,
+                        showText: _showText,
+                        show: _show,
+                        expanded: _expanded,
+                        onExpand: _onExpand,
+                      ),
                       childWhenDragging: SizedBox(),
-                      child: ConsoleWindow(showText: _showText, show: _show),
+                      child: ConsoleWindow(
+                        onClose: _onClose,
+                        closed: _closed,
+                        minimized: _minimized,
+                        onMinimize: _onMinimize,
+                        expanded: _expanded,
+                        showText: _showText,
+                        show: _show,
+                        onExpand: _onExpand,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 200.0),
